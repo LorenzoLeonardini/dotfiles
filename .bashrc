@@ -3,6 +3,8 @@
 # for examples
 #define GIT_COLOR_NORMAL “”
 
+set -o vi
+
 export JAVA_HOME="/usr/lib/jvm/java-11-openjdk"
 export PATH="$PATH:/home/pianka/.gem/ruby/2.5.0/bin"
 export PATH="$PATH:/home/pianka/.gem/ruby/2.5.0/gems/jekyll-3.7.3/exe"
@@ -98,7 +100,7 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias pi='ssh pi@192.168.1.201'
-alias remote='ssh pi@87.5.125.166'
+alias remote='ssh pi@79.56.206.252'
 alias battery="acpi"
 
 # Add an "alert" alias for long running commands.  Use like so:

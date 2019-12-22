@@ -35,6 +35,7 @@ set noshowmode
 set tabstop=4
 set softtabstop=4 noexpandtab
 set shiftwidth=4
+set relativenumber
 
 filetype indent plugin on
 syntax on
