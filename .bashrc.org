@@ -299,6 +299,6 @@ echo -n "${!name}"
 * Random functions used for this config
 
 #+name: get_ip
-#+begin_src bash
+#+begin_src bash :tangle no
 curl https://ipinfo.io/ip
 #+end_src
