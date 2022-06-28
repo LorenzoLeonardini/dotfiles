@@ -2,6 +2,7 @@
 #+AUTHOR: Lorenzo Leonardini
 #+DATE: <2021-07-21 Wed>
 #+PROPERTY: header-args :tangle ".bashrc" :comments noweb :noweb yes :results output
+#+auto_tangle: t
 
 * General settings
 ** Path
@@ -222,7 +223,8 @@ Handy aliases to open programs or stuff in bulk (like checking all my emails)
 #+begin_src bash
 alias gcs="google-chrome-stable"
 alias artists="gcs artists.spotify.com & gcs artists.apple.com & gcs artists.amazon.com"
-alias mail="gcs mail.yahoo.com & gcs mail.google.com/mail/u/0 & gcs mail.google.com/mail/u/1 & gcs mail.google.com/mail/u/2 & gcs mail.google.com/mail/u/3 & gcs mail.google.com/mail/u/4 & gcs mail.google.com/mail/u/5 & gcs outlook.office.com/owa"
+alias artists="gcs artists.spotify.com & gcs artists.apple.com & gcs artists.amazon.com"
+alias mail="gcs mail.yahoo.com & gcs mail.google.com/mail/u/0 & gcs mail.google.com/mail/u/1 & gcs mail.google.com/mail/u/2 & gcs mail.google.com/mail/u/3 & gcs mail.google.com/mail/u/4 & gcs mail.google.com/mail/u/5 & gcs mail.google.com/mail/u/6 & gcs mail.google.com/mail/u/7"
 #+end_src
 
 ** CTF
@@ -286,19 +288,40 @@ export WECHALLUSER="<<SECRET('OTW_USERNAME')>>"
 export WECHALLTOKEN="<<SECRET('OTW_TOKEN')>>"
 #+end_src
 
+* NVM
+
+Configuration for using nvm. Thanks to https://www.growingwiththeweb.com/2018/01/slow-nvm-init.html for a nice script to avoid startup slow downs
+
+#+begin_src bash
+if [ -s "/usr/share/nvm/nvm.sh" ] && [ ! "$(type -t __init_nvm)" = function ]; then
+    export NVM_DIR="/usr/share/nvm"
+    [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+    declare -a __node_commands=('nvm' 'node' 'npm' 'yarn' 'gulp' 'grunt' 'webpack')
+    function __init_nvm() {
+        for i in "${__node_commands[@]}"; do unalias $i; done
+        . "$NVM_DIR"/nvm.sh
+        unset __node_commands
+        unset -f __init_nvm
+    }
+    for i in "${__node_commands[@]}"; do alias $i='__init_nvm && '$i; done
+fi
+#+end_src
+
+* Random functions used for this config
+
+** Get IP
+
+#+name: get_ip
+#+begin_src bash :tangle no
+curl https://ipinfo.io/ip
+#+end_src
+
 ** Secrets
 
-This section is not interesting and just contains functions to extract secrets from the =.env= file. Note that the =.env= file is not for everydays' envirnment, it's local to this project and used to store secrets and passwords
+This section is not interesting and just contains functions to extract secrets from the =.env= file. Note that the =.env= file is not for everydays' environment, it's local to this project and used to store secrets and passwords
 
 #+name: SECRET
 #+begin_src bash :tangle no :var name=""
 . .env
 echo -n "${!name}"
-#+end_src
-
-* Random functions used for this config
-
-#+name: get_ip
-#+begin_src bash :tangle no
-curl https://ipinfo.io/ip
 #+end_src
