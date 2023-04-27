@@ -1,101 +1,136 @@
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-
-Plugin 'vim-syntastic/syntastic'
-
-Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plugin 'junegunn/fzf.vim'
-
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'scrooloose/nerdtree'
-Plugin 'sheerun/vim-polyglot'
+"""" polyglot
+" disable latex, since handled by vimtex
 let g:polyglot_disabled = ['latex']
 
-Plugin 'mattn/emmet-vim'
+call plug#begin()
 
-Plugin 'lervag/vimtex'
+Plug 'wakatime/vim-wakatime'
+Plug 'sheerun/vim-polyglot'
+Plug 'airblade/vim-gitgutter'
 
-Plugin 'fatih/vim-go'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-Plugin 'airblade/vim-gitgutter'
+Plug 'vim-syntastic/syntastic'
 
-Plugin 'wakatime/vim-wakatime'
+Plug 'mattn/emmet-vim'
 
-call vundle#end()
+Plug 'lervag/vimtex'
+
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-characterize'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-speeddating'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-liquid'
+Plug 'tpope/vim-fugitive'
+
+Plug 'vhda/verilog_systemverilog.vim'
+
+Plug 'vim-scripts/nginx.vim'
+
+Plug 'nelsyeung/twig.vim'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+Plug 'rhysd/vim-grammarous'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+call plug#end()
 filetype plugin indent on
 
 set laststatus=2
-set noshowmode
 
 set tabstop=4
 set softtabstop=4 noexpandtab
-set shiftwidth=4
-set relativenumber
+set shiftwidth=0
 
-filetype indent plugin on
 syntax on
+
+set relativenumber
 set number
 
-
-"""" netrw configuration
-" absolute width of netrw window
-let g:netrw_winsize = -28
-
-" tree view
-let g:netrw_liststyle = 3
-
-" sort is affecting only: directories on the top, files below
-let g:netrw_sort_sequence = '[\/]$,*'
-
-" open file in a new tab
-let g:netrw_browse_split = 3
-
+"""" airline configuration
 let g:airline_theme='powerlineish'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 
-" This is the default extra key bindings
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
+"""" file search
+nnoremap <C-p> :Files<CR>
+set path+=**
+set wildmenu
+set wildignore+=*/.git/*
+set wildignore+=*/node_modules/*
+set wildignore+=*/vendor/*
 
-" Default fzf layout
-" - down / up / left / right
-let g:fzf_layout = { 'down': '~40%' }
+"""" tag jumping
+command! MakeTags !ctags -R .
 
-" In Neovim, you can set up fzf window using a Vim command
-let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_layout = { 'window': '-tabnew' }
-let g:fzf_layout = { 'window': '10split' }
+"""" various costumization
+set scrolloff=1
+set sidescrolloff=5
+set encoding=utf-8
+set formatoptions+=j " remove comment leader when joining commented lines
+set history=100
+set tabpagemax=50
+" Mapping for fixing file indentation automatically
+nmap <F7> gg=G<C-o><C-o>
+imap <F7> <Esc>gg=G<C-o><C-o>
+" Autoclosing brackets and similar
+" inoremap " ""<left>
+" inoremap ' ''<left>
+" inoremap ( ()<left>
+inoremap (<CR> (<CR>)<up><Esc>o
+" inoremap [ []<left>
+inoremap [<CR> [<CR>]<up><Esc>o
+" inoremap { {}<left>
+inoremap {<CR> {<CR>}<up><Esc>o
+" New line command
+:nnoremap <NL> i<CR><ESC>
 
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+autocmd BufNewFile,BufRead *.shader set syntax=glsl
 
-" Enable per-command history.
-" CTRL-N and CTRL-P will be automatically bound to next-history and
-" previous-history instead of down and up. If you don't like the change,
-" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
-let g:fzf_history_dir = '~/.local/share/fzf-history'
+function! InsertTabWrapper()
+	let col = col('.') - 1
+	if !col || getline('.')[col - 1] !~ '\k'
+		return "\<tab>"
+	else
+		return "\<c-n>"
+	endif
+endfunction
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 
-map <C-s> <esc>:w! <CR>
-map <C-o> <esc>:tabnew
+highlight clear SignColumn
+
+let g:tex_flavor = 'latex'
+let g:vimtex_compiler_latexmk = {
+    \ 'options' : [
+    \   '-pdf',
+    \   '-shell-escape',
+    \   '-verbose',
+    \   '-file-line-error',
+    \   '-synctex=1',
+    \   '-interaction=nonstopmode',
+    \ ],
+    \}
+let g:vimtex_quickfix_ignore_filters = [
+	\'Underfull \\hbox (badness [0-9]*) in ',
+	\'Overfull \\hbox ([0-9]*.[0-9]*pt too wide) in ',
+	\'Package hyperref Warning: Token not allowed in a PDF string',
+	\'Package typearea Warning: Bad type area settings!',
+	\]
+
+set ttymouse=sgr
+set mouse=a
+
+set background=dark
+
+" grammarous
+let g:grammarous#use_vim_spelllang = 0
+let g:grammarous#enable_spell_check = 1
+
+" coc-ltex
+let g:coc_filetype_map = {'tex': 'latex'}

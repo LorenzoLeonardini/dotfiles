@@ -23,7 +23,7 @@ export PATH="$PATH:/home/pianka/.local/share/gem/ruby/2.7.0/bin"
 export PATH="$PATH:/home/pianka/.local/share/gem/ruby/3.0.0/bin"
 export PATH="$PATH:/home/pianka/.local/bin"
 export PATH="$PATH:$JAVA_HOME"
-export PATH="$(yarn global bin):$PATH"
+export PATH="$HOME/.yarn/bin:$PATH"
 #+end_src
 
 ** Editor
@@ -155,7 +155,7 @@ if [ "$0" = "/usr/sbin/lightdm-session" -a "$DESKTOP_SESSION" = "i3" ]; then
 	export $(gnome-keyring-daemon -s)
 fi
 
-export TERM=xterm-256color
+export TERM=screen-256color
 
 complete -cf sudo
 #+end_src
@@ -167,7 +167,7 @@ Setting up my nice prompt. The look is basically =($GIT_BRANCH) [$TIME][$USER@$H
 #+begin_src bash
 if [ "$color_prompt" = yes ]; then
 #    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[0;37m\][\t][\[\033[00;34m\]\u\[\033[0;37m\]@\[\033[32m\]\h\[\033[0;37m\]]\[\033[0;31m\]`git branch 2>/dev/null | grep \* | head -1 | sed "s/\* //g" |     awk "{ print \"(\"\\\$1 \")\" }"` \[\033[1;33m\]\w \[\033[0;33m\]\$ \[\033[00m\] '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[0;37m\][\t][\[\033[00;34m\]\u\[\033[0;37m\]@\[\033[32m\]\h\[\033[0;37m\]]\[\033[0;31m\]`git branch 2>/dev/null | grep \* | head -1 | sed "s/\* //g" |     awk "{ print \"(\"\\\$1 \")\" }"` \[\033[1;33m\]\w \[\033[0;33m\]\$ \[\033[00m\]'
 
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
@@ -197,22 +197,6 @@ alias weather="curl wttr.in/genova"
 alias gcs="google-chrome-stable"
 #+end_src
 
-Additional alias for prettier-watch
-
-#+begin_src bash
-alias prettier-watch='npx onchange "**/*" -- prettier -w --ignore-unknown {{changed}}'
-#+end_src
-
-** Alerts
-
-Sometimes it might be useful to set up a notification to know when a command finishes execution
-
-#+begin_src bash
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-#+end_src
-
 ** SSH connections
 
 These aliases are used to make ssh-ing easier and faster
@@ -225,48 +209,12 @@ alias server='ssh pianka@tapandfish.com -i ~/.ssh/github'
 
 ** Opening stuff
 
-Handy aliases to open programs or stuff in bulk (like checking all my emails)
+Handy aliases to open programs or stuff in bulk
 
 #+begin_src bash
 alias gcs="google-chrome-stable"
 alias artists="gcs artists.spotify.com & gcs artists.apple.com & gcs artists.amazon.com"
 alias artists="gcs artists.spotify.com & gcs artists.apple.com & gcs artists.amazon.com"
-alias mail="gcs mail.yahoo.com & gcs mail.google.com/mail/u/0 & gcs mail.google.com/mail/u/1 & gcs mail.google.com/mail/u/2 & gcs mail.google.com/mail/u/3 & gcs mail.google.com/mail/u/4 & gcs mail.google.com/mail/u/5 & gcs mail.google.com/mail/u/6 & gcs mail.google.com/mail/u/7"
-#+end_src
-
-** CTF
-
-Some functions used as aliases to be more productive during CTFs (mainly AD when you want to lunch your attack /fast/ and get a first blood)
-
-#+begin_src bash
-attack() {
-	cd /home/pianka/things/brontosauro/attacklibrary;
-	. env/bin/activate;
-	tmux send-keys './start_sploit.py --server-url http://localhost:3333 '
-}
-#+end_src
-
-*** CyberChallenge.IT /(deprecated)/
-
-These functions will be probably useless now, I made them to be faster during the Jeopardy and A/D competitions of [[https://cyberchallenge.it][CyberChallenge.IT]]. Some of them just put you in the correct folder, other ones also activate a python virtual environment and prepare a script template.
-
-#+begin_src bash
-cc() {
-	cd /home/pianka/cc21;
-	. env/bin/activate;
-	cd jeopardy
-}
-ad() {
-	cd /home/pianka/things/brontosauro/ad-tools
-}
-pwn() {
-	echo -e "#!/bin/env python\n\nfrom pwn_lib import *\n\npwn = PWN('./$1', '$2', $3)\n\n\n\npwn.interactive()" > "$1.py"
-	chmod +x "$1.py"
-}
-cr() {
-	echo -e "#!/bin/env python\n\nfrom pwn import *\n\nconn = remote('$2', $3)\n\n\n\nconn.interactive()" > "$1.py"
-	chmod +x "$1.py"
-}
 #+end_src
 
 * Stuff I should be using but maybe it's too late
@@ -300,8 +248,8 @@ export WECHALLTOKEN="<<SECRET('OTW_TOKEN')>>"
 Configuration for using nvm. Thanks to https://www.growingwiththeweb.com/2018/01/slow-nvm-init.html for a nice script to avoid startup slow downs
 
 #+begin_src bash
-if [ -s "/usr/share/nvm/nvm.sh" ] && [ ! "$(type -t __init_nvm)" = function ]; then
-    export NVM_DIR="/usr/share/nvm"
+if [ -s "${HOME}/.nvm/nvm.sh" ] && [ ! "$(type -t __init_nvm)" = function ]; then
+    export NVM_DIR="${HOME}/.nvm"
     [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
     declare -a __node_commands=('nvm' 'node' 'npm' 'yarn' 'gulp' 'grunt' 'webpack')
     function __init_nvm() {
@@ -312,6 +260,12 @@ if [ -s "/usr/share/nvm/nvm.sh" ] && [ ! "$(type -t __init_nvm)" = function ]; t
     }
     for i in "${__node_commands[@]}"; do alias $i='__init_nvm && '$i; done
 fi
+#+end_src
+
+* Ranger
+
+#+begin_src bash
+export RANGER_LOAD_DEFAULT_RC=FALSE
 #+end_src
 
 * Random functions used for this config
