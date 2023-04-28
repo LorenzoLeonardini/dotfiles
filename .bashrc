@@ -1,14 +1,4 @@
-#+TITLE: .bashrc configuration
-#+AUTHOR: Lorenzo Leonardini
-#+DATE: <2021-07-21 Wed>
-#+PROPERTY: header-args :tangle ".bashrc" :comments noweb :noweb yes :results output
-#+auto_tangle: t
-
-* General settings
-** Path
-Exporting PATH values for Java, Go, Ruby, Deno, stuff. This probably needs to be improved because a lot of things are hardcoded (like the Java version or the username)
-
-#+begin_src bash
+# [[file:.bashrc.org::*Path][Path:1]]
 export JAVA_HOME="/usr/lib/jvm/java-11-openjdk"
 
 export DENO_INSTALL="/home/pianka/.deno"
@@ -24,94 +14,64 @@ export PATH="$PATH:/home/pianka/.local/share/gem/ruby/3.0.0/bin"
 export PATH="$PATH:/home/pianka/.local/bin"
 export PATH="$PATH:$JAVA_HOME"
 export PATH="$HOME/.yarn/bin:$PATH"
-#+end_src
+# Path:1 ends here
 
-** Editor
-
-Set vi (vim) as primary editor, which is fun, cause I'm writing this on Emacs.
-
-#+begin_src bash
+# [[file:.bashrc.org::*Editor][Editor:1]]
 set -o vi
 
 export EDITOR="vim"
 export VISUAL="vim"
-#+end_src
+# Editor:1 ends here
 
-** Random settings
-
-I don't really know what /all/ of this does. I shamelessly copied it from somewhere, some extra things it does is to set pretty colors and stuff
-
-Let's start with some commented code
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:1]]
 # ~/.bashrc: executed by bast(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 #define GIT_COLOR_NORMAL “”
-#+end_src
+# Random settings:1 ends here
 
-If not running interactively, don't do anything
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:2]]
 [ -z "$PS1" ] && return
-#+end_src
+# Random settings:2 ends here
 
-Don't put duplicate lines or lines starting with space in the history. See bash(1) for more options
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:3]]
 HISTCONTROL=ignoreboth
-#+end_src
+# Random settings:3 ends here
 
-Append to the history file, don't overwrite it
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:4]]
 shopt -s histappend
-#+end_src
+# Random settings:4 ends here
 
-For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:5]]
 HISTSIZE=1000
 HISTFILESIZE=2000
-#+end_src
+# Random settings:5 ends here
 
-Check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:6]]
 shopt -s checkwinsize
-#+end_src
+# Random settings:6 ends here
 
-If set, the pattern "**" used in a pathname expansion context will match all files and zero or more directories and subdirectories.
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:7]]
 #shopt -s globstar
-#+end_src
+# Random settings:7 ends here
 
-Make less more friendly for non-text input files, see lesspipe(1)
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:8]]
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-#+end_src
+# Random settings:8 ends here
 
-Set variable identifying the chroot you work in (used in the prompt below)
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:9]]
 if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
-#+end_src
+# Random settings:9 ends here
 
-Set a fancy prompt (non-color, unless we know we "want" color)
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:10]]
 case "$TERM" in
     xterm-color) color_prompt=yes;;
 esac
-#+end_src
+# Random settings:10 ends here
 
-Colored prompt, if the terminal has the capability
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:11]]
 force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
@@ -136,19 +96,15 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
-#+end_src
+# Random settings:11 ends here
 
-Enable programmable completion features (you don't need to enable this, if it's already enabled in /etc/bash.bashrc and /etc/profile sources /etc/bash.bashrc).
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:12]]
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
-#+end_src
+# Random settings:12 ends here
 
-I honestly don't know
-
-#+begin_src bash
+# [[file:.bashrc.org::*Random settings][Random settings:13]]
 stty -ixon
 
 if [ "$0" = "/usr/sbin/lightdm-session" -a "$DESKTOP_SESSION" = "i3" ]; then
@@ -158,13 +114,9 @@ fi
 export TERM=screen-256color
 
 complete -cf sudo
-#+end_src
+# Random settings:13 ends here
 
-** PS1
-
-Setting up my nice prompt. The look is basically =($GIT_BRANCH) [$TIME][$USER@$HOST] $FOLDER $=, with nice colors
-
-#+begin_src bash
+# [[file:.bashrc.org::*PS1][PS1:1]]
 if [ "$color_prompt" = yes ]; then
 #    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
     PS1='${debian_chroot:+($debian_chroot)}\[\033[0;37m\][\t][\[\033[00;34m\]\u\[\033[0;37m\]@\[\033[32m\]\h\[\033[0;37m\]]\[\033[0;31m\]`git branch 2>/dev/null | grep \* | head -1 | sed "s/\* //g" |     awk "{ print \"(\"\\\$1 \")\" }"` \[\033[1;33m\]\w \[\033[0;33m\]\$ \[\033[00m\]'
@@ -182,43 +134,29 @@ xterm*|rxvt*)
 *)
     ;;
 esac
-#+end_src
+# PS1:1 ends here
 
-* Aliases
-
-Set some useful aliases for =ls= and system info
-
-#+begin_src bash
+# [[file:.bashrc.org::*Aliases][Aliases:1]]
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias battery="acpi"
 alias weather="curl wttr.in/genova"
 alias gcs="google-chrome-stable"
-#+end_src
+# Aliases:1 ends here
 
-** SSH connections
-
-These aliases are used to make ssh-ing easier and faster
-
-#+begin_src bash
+# [[file:.bashrc.org::*SSH connections][SSH connections:1]]
 alias pi='ssh pi@192.168.1.201'
 alias server='ssh pianka@tapandfish.com -i ~/.ssh/github'
-#+end_src
+# SSH connections:1 ends here
 
-** Opening stuff
-
-Handy aliases to open programs or stuff in bulk
-
-#+begin_src bash
+# [[file:.bashrc.org::*Opening stuff][Opening stuff:1]]
 alias gcs="google-chrome-stable"
 alias artists="gcs artists.spotify.com & gcs artists.apple.com & gcs artists.amazon.com"
 alias artists="gcs artists.spotify.com & gcs artists.apple.com & gcs artists.amazon.com"
-#+end_src
+# Opening stuff:1 ends here
 
-* Stuff I should be using but maybe it's too late
-
-#+begin_src bash
+# [[file:.bashrc.org::*Stuff I should be using but maybe it's too late][Stuff I should be using but maybe it's too late:1]]
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
@@ -227,15 +165,9 @@ alias artists="gcs artists.spotify.com & gcs artists.apple.com & gcs artists.ama
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+# Stuff I should be using but maybe it's too late:1 ends here
 
-#+end_src
-
-
-* NVM
-
-Configuration for using nvm. Thanks to https://www.growingwiththeweb.com/2018/01/slow-nvm-init.html for a nice script to avoid startup slow downs
-
-#+begin_src bash
+# [[file:.bashrc.org::*NVM][NVM:1]]
 if [ -s "${HOME}/.nvm/nvm.sh" ] && [ ! "$(type -t __init_nvm)" = function ]; then
     export NVM_DIR="${HOME}/.nvm"
     [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
@@ -248,10 +180,8 @@ if [ -s "${HOME}/.nvm/nvm.sh" ] && [ ! "$(type -t __init_nvm)" = function ]; the
     }
     for i in "${__node_commands[@]}"; do alias $i='__init_nvm && '$i; done
 fi
-#+end_src
+# NVM:1 ends here
 
-* Ranger
-
-#+begin_src bash
+# [[file:.bashrc.org::*Ranger][Ranger:1]]
 export RANGER_LOAD_DEFAULT_RC=FALSE
-#+end_src
+# Ranger:1 ends here
