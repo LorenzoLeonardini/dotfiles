@@ -185,3 +185,9 @@ fi
 # [[file:.bashrc.org::*Ranger][Ranger:1]]
 export RANGER_LOAD_DEFAULT_RC=FALSE
 # Ranger:1 ends here
+
+# [[file:.bashrc.org::*Tmux][Tmux:1]]
+if [ -x "$(command -v tmux)" ] && [ -n "${DISPLAY}" ] && [ -z "${TMUX}" ]; then
+    exec tmux -u
+fi
+# Tmux:1 ends here

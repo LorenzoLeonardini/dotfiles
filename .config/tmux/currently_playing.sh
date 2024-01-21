@@ -51,6 +51,8 @@ if [[ $output != $last_playing ]]; then
 	echo -n $output > ~/.config/tmux/last_playing
 fi
 
+output=$(echo $output | strings | tr -d '\n')
+
 if [[ ${#output} -ge 40 ]]; then
 	output="${output::40}\u2026"
 fi

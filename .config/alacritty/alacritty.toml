@@ -1,0 +1,60 @@
+[colors.bright]
+black = "#000000"
+blue = "#8BE9FD"
+cyan = "#FF79C6"
+green = "#50FA7B"
+magenta = "#BD93F9"
+red = "#FF5555"
+white = "#FFFFFF"
+yellow = "#FFB86C"
+
+[colors.normal]
+black = "#44475A"
+blue = "#8BE9FD"
+cyan = "#FF79C6"
+green = "#50FA7B"
+magenta = "#BD93F9"
+red = "#FF5555"
+white = "#94A3A5"
+yellow = "#FFB86C"
+
+[colors.primary]
+background = "#282A36"
+foreground = "#AEBCBE"
+
+[cursor.style]
+blinking = "On"
+shape = "Block"
+
+[font]
+size = 10.0
+
+[font.normal]
+family = "SauceCodePro NF"
+style = "Regular"
+
+[[keyboard.bindings]]
+action = "CreateNewWindow"
+key = "N"
+mods = "Shift|Control"
+
+[[keyboard.bindings]]
+action = "CreateNewWindow"
+key = "N"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "ToggleFullScreen"
+key = "F11"
+
+[scrolling]
+history = 10000
+
+[window]
+decorations = "full"
+opacity = 0.985
+title = "Terminal"
+
+[window.dimensions]
+columns = 80
+lines = 22

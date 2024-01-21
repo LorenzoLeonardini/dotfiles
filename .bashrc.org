@@ -2,7 +2,7 @@
 #+AUTHOR: Lorenzo Leonardini
 #+DATE: <2021-07-21 Wed>
 #+PROPERTY: header-args :tangle ".bashrc" :comments noweb :noweb yes :results output
-#+auto_tangle: t
+#+auto_tangle: g
 
 * General settings
 ** Path
@@ -254,4 +254,12 @@ fi
 
 #+begin_src bash
 export RANGER_LOAD_DEFAULT_RC=FALSE
+#+end_src
+
+* Tmux
+
+#+begin_src bash
+if [ -x "$(command -v tmux)" ] && [ -n "${DISPLAY}" ] && [ -z "${TMUX}" ]; then
+    exec tmux -u
+fi
 #+end_src
