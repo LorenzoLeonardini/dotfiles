@@ -202,9 +202,10 @@ alias gcs="google-chrome-stable"
 These aliases are used to make ssh-ing easier and faster
 
 #+begin_src bash
-alias pi='ssh pi@192.168.1.201'
-alias server='ssh pianka@tapandfish.com -i ~/.ssh/github'
+alias pi='ssh 192.168.1.201'
 #+end_src
+
+#+RESULTS:
 
 ** Opening stuff
 
@@ -214,6 +215,22 @@ Handy aliases to open programs or stuff in bulk
 alias gcs="google-chrome-stable"
 alias artists="gcs artists.spotify.com & gcs artists.apple.com & gcs artists.amazon.com"
 alias artists="gcs artists.spotify.com & gcs artists.apple.com & gcs artists.amazon.com"
+#+end_src
+
+** Python virtual environments
+
+#+begin_src bash
+function venv {
+    if [ -f ./venv/bin/activate ]; then
+        . ./venv/bin/activate
+    else
+        virtualenv venv
+        . ./venv/bin/activate
+        if [ -f ./requirements.txt ]; then
+            pip install -r requirements.txt
+        fi
+    fi
+}
 #+end_src
 
 * Stuff I should be using but maybe it's too late

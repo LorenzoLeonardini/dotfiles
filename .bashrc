@@ -146,8 +146,7 @@ alias gcs="google-chrome-stable"
 # Aliases:1 ends here
 
 # [[file:.bashrc.org::*SSH connections][SSH connections:1]]
-alias pi='ssh pi@192.168.1.201'
-alias server='ssh pianka@tapandfish.com -i ~/.ssh/github'
+alias pi='ssh 192.168.1.201'
 # SSH connections:1 ends here
 
 # [[file:.bashrc.org::*Opening stuff][Opening stuff:1]]
@@ -155,6 +154,20 @@ alias gcs="google-chrome-stable"
 alias artists="gcs artists.spotify.com & gcs artists.apple.com & gcs artists.amazon.com"
 alias artists="gcs artists.spotify.com & gcs artists.apple.com & gcs artists.amazon.com"
 # Opening stuff:1 ends here
+
+# [[file:.bashrc.org::*Python virtual environments][Python virtual environments:1]]
+function venv {
+    if [ -f ./venv/bin/activate ]; then
+        . ./venv/bin/activate
+    else
+        virtualenv venv
+        . ./venv/bin/activate
+        if [ -f ./requirements.txt ]; then
+            pip install -r requirements.txt
+        fi
+    fi
+}
+# Python virtual environments:1 ends here
 
 # [[file:.bashrc.org::*Stuff I should be using but maybe it's too late][Stuff I should be using but maybe it's too late:1]]
 # Alias definitions.
