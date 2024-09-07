@@ -2,7 +2,7 @@
 #+AUTHOR: Lorenzo Leonardini
 #+DATE: <2021-07-21 Wed>
 #+PROPERTY: header-args :tangle ".bashrc" :comments noweb :noweb yes :results output
-#+auto_tangle: g
+#+auto_tangle: t
 
 * General settings
 ** Path
@@ -231,6 +231,16 @@ function venv {
         fi
     fi
 }
+#+end_src
+
+** Sanitized folder creation for CTF challenges
+
+#+begin_src bash
+function chall {
+    sanitized=$(echo -n "$@" | perl -pe 's/[\?\[\]\/\\=<>:;,''"&\$#*()|~`!{}%+]//g;' -pe 's/[\r\n\t -]+/-/g;')
+    mkdir "$sanitized"
+    cd "$sanitized"
+};
 #+end_src
 
 * Stuff I should be using but maybe it's too late

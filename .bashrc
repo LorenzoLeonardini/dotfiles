@@ -169,6 +169,14 @@ function venv {
 }
 # Python virtual environments:1 ends here
 
+# [[file:.bashrc.org::*Sanitized folder creation for CTF challenges][Sanitized folder creation for CTF challenges:1]]
+function chall {
+    sanitized=$(echo -n "$@" | perl -pe 's/[\?\[\]\/\\=<>:;,''"&\$#*()|~`!{}%+]//g;' -pe 's/[\r\n\t -]+/-/g;')
+    mkdir "$sanitized"
+    cd "$sanitized"
+};
+# Sanitized folder creation for CTF challenges:1 ends here
+
 # [[file:.bashrc.org::*Stuff I should be using but maybe it's too late][Stuff I should be using but maybe it's too late:1]]
 # Alias definitions.
 # You may want to put all your additions into a separate file like
