@@ -221,13 +221,23 @@ alias artists="gcs artists.spotify.com & gcs artists.apple.com & gcs artists.ama
 
 #+begin_src bash
 function venv {
-    if [ -f ./venv/bin/activate ]; then
+    if [ -f ./.venv/bin/activate ]; then
+        . ./.venv/bin/activate
+    elif [ -f ./venv/bin/activate ]; then
         . ./venv/bin/activate
     else
-        virtualenv venv
-        . ./venv/bin/activate
-        if [ -f ./requirements.txt ]; then
-            pip install -r requirements.txt
+        if command -v uv >/dev/null 2>&1; then
+            uv venv
+            . ./.venv/bin/activate
+            if [ -f ./requirements.txt ]; then
+                uv pip install -r requirements.txt
+            fi
+        else
+            virtualenv venv
+            . ./venv/bin/activate
+            if [ -f ./requirements.txt ]; then
+                pip install -r requirements.txt
+            fi
         fi
     fi
 }
