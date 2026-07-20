@@ -119,7 +119,7 @@ complete -cf sudo
 # [[file:.bashrc.org::*PS1][PS1:1]]
 if [ "$color_prompt" = yes ]; then
 #    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[0;37m\][\t][\[\033[00;34m\]\u\[\033[0;37m\]@\[\033[32m\]\h\[\033[0;37m\]]\[\033[0;31m\]`git branch 2>/dev/null | grep \* | head -1 | sed "s/\* //g" |     awk "{ print \"(\"\\\$1 \")\" }"` \[\033[1;33m\]\w \[\033[0;33m\]\$ \[\033[00m\]'
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[0;37m\][\t][\[\033[00;34m\]\u\[\033[0;37m\]@\[\033[32m\]\h\[\033[0;37m\]]\[\033[0;31m\]`export BRANCH=$(git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null || git --no-optional-locks rev-parse --short HEAD 2>/dev/null); if [ "${BRANCH:-}" != "" ]; then echo "(${BRANCH})"; fi` \[\033[1;33m\]\w \[\033[0;33m\]\$ \[\033[00m\]'
 
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
@@ -129,7 +129,7 @@ unset color_prompt force_color_prompt
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-	PS1='\[\033[0;37m\][\t][\[\033[00;34m\]\u\[\033[0;37m\]@\[\033[32m\]\h\[\033[0;37m\]]\[\033[0;31m\]`git branch 2>/dev/null | grep \* | head -1 | sed "s/\* //g" | awk "{ print \"(\"\\\$1 \")\" }"` \[\033[1;33m\]\w \[\033[0;33m\]\$ \[\033[00m\]'
+	PS1='\[\033[0;37m\][\t][\[\033[00;34m\]\u\[\033[0;37m\]@\[\033[32m\]\h\[\033[0;37m\]]\[\033[0;31m\]`export BRANCH=$(git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null || git --no-optional-locks rev-parse --short HEAD 2>/dev/null); if [ "${BRANCH:-}" != "" ]; then echo "(${BRANCH})"; fi` \[\033[1;33m\]\w \[\033[0;33m\]\$ \[\033[00m\]'
 	;;
 *)
     ;;
