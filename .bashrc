@@ -185,6 +185,14 @@ function chall {
     mkdir "$sanitized"
     cd "$sanitized"
 };
+
+function pwnt {
+    if [ -f solve.py ]; then
+        echo -e "\033[1;31msolve.py already exists\033[0m"
+    else
+        pwn template --template ~/.template.mako "$@" > solve.py
+    fi
+};
 # Sanitized folder creation for CTF challenges:1 ends here
 
 # [[file:.bashrc.org::*Stuff I should be using but maybe it's too late][Stuff I should be using but maybe it's too late:1]]
